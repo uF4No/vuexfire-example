@@ -22,6 +22,9 @@ export default new Vuex.Store({
         booksCollection.orderBy('author', 'asc')
       )
     }),
+    addBook: firestoreAction((context, payload) => {
+      return booksCollection.add(payload.newBook)
+    }),
   },
   mutations: {
     // adds Vuexfire built-in mutations

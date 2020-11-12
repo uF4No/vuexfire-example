@@ -1,7 +1,30 @@
 <template>
   <div id="app">
     <h1>My Book List app</h1>
-    <div class="todo" v-for="book in allBooks" :key="book.id">
+    <form ref="form" class="form-wrapper" @submit.prevent>
+      <div class="form-row">
+        <input type="text" name="title" v-model="title" placeholder="title" />
+      </div>
+      <div class="form-row">
+        <input
+          type="text"
+          name="author"
+          v-model="author"
+          placeholder="author"
+        />
+      </div>
+      <div class="form-row">
+        <textarea
+          name=""
+          v-model="summary"
+          cols="30"
+          rows="3"
+          placeholder="book summary"
+        ></textarea>
+      </div>
+      <button @click.once="addBook">Save Book</button>
+    </form>
+    <div class="book" v-for="book in allBooks" :key="book.id">
       <h2>{{ book.title }}</h2>
       <p>Written by {{ book.author }}</p>
       <p>{{ book.summary }}</p>
@@ -14,11 +37,47 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      title: '',
+      author: '',
+      summary: '',
+    }
+  },
   mounted() {
     this.$store.dispatch('bindBooks')
   },
   computed: {
     ...mapGetters(['allBooks']),
+  },
+  methods: {
+    addBook() {
+      if (this.validateForm) {
+        console.log('Form ok!')
+        this.$store
+          .dispatch('addBook', {
+            newBook: {
+              author: this.author,
+              title: this.title,
+              summary: this.summary,
+            },
+          })
+          .then(() => {
+            this.resetForm()
+          })
+      }
+    },
+    resetForm() {
+      this.summary = ''
+      this.title = ''
+      this.author = ''
+    },
+    validateForm() {
+      if (this.title == '') return false
+      if (this.author == '') return false
+      if (this.summary == '') return false
+      return true
+    },
   },
 }
 </script>
@@ -32,7 +91,29 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.todo {
+.form-wrapper {
+  width: 50%;
+  min-width: 300px;
+  margin: 0 auto;
+}
+.form-row {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+}
+input,
+textarea {
+  width: 100%;
+}
+button {
+  background: cornflowerblue;
+  padding: 0.6rem 1.4rem;
+  border: 0;
+  color: white;
+  border-radius: 5px;
+  font-size: 1.1rem;
+}
+.book {
   margin: 2rem;
   border-bottom: 1px solid gray;
 }
