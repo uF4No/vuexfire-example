@@ -23,7 +23,12 @@ export default new Vuex.Store({
       )
     }),
     addBook: firestoreAction((context, payload) => {
+      console.log('Adding a new book!')
       return booksCollection.add(payload.newBook)
+    }),
+    deleteBook: firestoreAction((context, payload) => {
+      console.log(`Deleting book ${payload.bookId}`)
+      return booksCollection.doc(payload.bookId).delete()
     }),
   },
   mutations: {

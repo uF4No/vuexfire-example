@@ -22,12 +22,15 @@
           placeholder="book summary"
         ></textarea>
       </div>
-      <button @click.once="addBook">Save Book</button>
+      <button class="btn-blue" @click.once="addBook">Save Book</button>
     </form>
     <div class="book" v-for="book in allBooks" :key="book.id">
       <h2>{{ book.title }}</h2>
       <p>Written by {{ book.author }}</p>
       <p>{{ book.summary }}</p>
+      <button class="btn-red" @click.once="deleteBook(book.id)">
+        Delete book
+      </button>
     </div>
   </div>
 </template>
@@ -67,6 +70,9 @@ export default {
           })
       }
     },
+    deleteBook(id) {
+      this.$store.dispatch('deleteBook', { bookId: id })
+    },
     resetForm() {
       this.summary = ''
       this.title = ''
@@ -105,13 +111,22 @@ input,
 textarea {
   width: 100%;
 }
-button {
+.btn-blue {
   background: cornflowerblue;
   padding: 0.6rem 1.4rem;
   border: 0;
   color: white;
   border-radius: 5px;
   font-size: 1.1rem;
+}
+.btn-red {
+  background: red;
+  padding: 0.4rem 0.8rem;
+  border: 0;
+  color: white;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  margin: 0.5rem;
 }
 .book {
   margin: 2rem;
