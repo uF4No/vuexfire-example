@@ -2,6 +2,7 @@
   <div id="app">
     <h1>My Book List app</h1>
     <form ref="form" class="form-wrapper" @submit.prevent>
+      <h2>Add another book</h2>
       <div class="form-row">
         <input type="text" name="title" v-model="title" placeholder="title" />
       </div>
@@ -24,13 +25,15 @@
       </div>
       <button class="btn-blue" @click.once="addBook">Save Book</button>
     </form>
-    <div class="book" v-for="book in allBooks" :key="book.id">
-      <h2>{{ book.title }}</h2>
-      <p>Written by {{ book.author }}</p>
-      <p>{{ book.summary }}</p>
-      <button class="btn-red" @click.once="deleteBook(book.id)">
-        Delete book
-      </button>
+    <div class="books-wrapper">
+      <div class="book" v-for="book in allBooks" :key="book.id">
+        <h2>{{ book.title }}</h2>
+        <p>Written by {{ book.author }}</p>
+        <p>{{ book.summary }}</p>
+        <button class="btn-red" @click.once="deleteBook(book.id)">
+          Delete book
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -101,6 +104,9 @@ export default {
   width: 50%;
   min-width: 300px;
   margin: 0 auto;
+  border: 1px solid lightslategray;
+  border-radius: 10px;
+  padding: 2rem;
 }
 .form-row {
   display: flex;
@@ -109,7 +115,10 @@ export default {
 }
 input,
 textarea {
+  font-size: 1rem;
   width: 100%;
+  padding: 0.4rem;
+  /* border-radius: 5px; */
 }
 .btn-blue {
   background: cornflowerblue;
@@ -128,8 +137,16 @@ textarea {
   font-size: 1.1rem;
   margin: 0.5rem;
 }
+.books-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 .book {
+  width: 32%;
   margin: 2rem;
   border-bottom: 1px solid gray;
+  width: 200px;
+  padding: 2rem;
 }
 </style>
