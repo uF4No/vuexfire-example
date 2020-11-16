@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <h1>My Book List app</h1>
+    <div id="nav">
+      <router-link to="/">Basic binding</router-link> |
+      <router-link to="/load-more">Load more Pagination</router-link> |
+      <router-link to="/pagination">Next-Prev. Pagination</router-link>
+    </div>
     <form ref="form" class="form-wrapper" @submit.prevent>
       <h2>Add another book</h2>
       <div class="form-row">
@@ -25,37 +30,12 @@
       </div>
       <button class="btn-blue" @click.once="addBook">Save Book</button>
     </form>
-    <div class="books-wrapper">
-      <div class="book" v-for="book in allBooks" :key="book.id">
-        <h2>{{ book.title }}</h2>
-        <p>Written by {{ book.author }}</p>
-        <p>{{ book.summary }}</p>
-        <button class="btn-red" @click.once="deleteBook(book.id)">
-          Delete book
-        </button>
-      </div>
-    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-  name: 'App',
-  data() {
-    return {
-      title: '',
-      author: '',
-      summary: '',
-    }
-  },
-  mounted() {
-    this.$store.dispatch('bindBooks')
-  },
-  computed: {
-    ...mapGetters(['allBooks']),
-  },
   methods: {
     addBook() {
       if (this.validateForm) {
@@ -98,8 +78,21 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+
 .form-wrapper {
   width: 50%;
   min-width: 300px;
@@ -119,6 +112,9 @@ textarea {
   width: 100%;
   padding: 0.4rem;
   /* border-radius: 5px; */
+}
+.subtitle {
+  font-size: 0.8rem;
 }
 .btn-blue {
   background: cornflowerblue;
@@ -140,13 +136,15 @@ textarea {
 .books-wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 .book {
-  width: 32%;
-  margin: 2rem;
+  /* shorhand for  */
+  flex: 1 1 30%; /*grow | shrink | basis */
   border-bottom: 1px solid gray;
-  width: 200px;
-  padding: 2rem;
+  padding: 1rem;
+}
+.mt {
+  margin-top: 1rem;
 }
 </style>
